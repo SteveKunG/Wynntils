@@ -19,7 +19,8 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Pseudo
 public class CustomLayerFeatureRendererMixin {
     @ModifyArg(
-            method = "renderLayers",
+            method =
+                    "renderLayers(Lnet/minecraft/client/player/AbstractClientPlayer;Ldev/tr7zw/skinlayers/accessor/PlayerSettings;Lcom/mojang/blaze3d/vertex/PoseStack;Lcom/mojang/blaze3d/vertex/VertexConsumer;II)V",
             at =
                     @At(
                             value = "INVOKE",
