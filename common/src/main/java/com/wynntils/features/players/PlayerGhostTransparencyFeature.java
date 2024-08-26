@@ -10,6 +10,7 @@ import com.wynntils.core.persisted.Persisted;
 import com.wynntils.core.persisted.config.Category;
 import com.wynntils.core.persisted.config.Config;
 import com.wynntils.core.persisted.config.ConfigCategory;
+import com.wynntils.mc.event.CustomModFeatureRenderTranslucentCheckEvent;
 import com.wynntils.mc.event.LivingEntityRenderTranslucentCheckEvent;
 import com.wynntils.mc.event.PlayerRenderLayerEvent;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,15 @@ public class PlayerGhostTransparencyFeature extends Feature {
 
     @SubscribeEvent
     public void onTranslucentCheck(LivingEntityRenderTranslucentCheckEvent e) {
+        if (!(e.getEntity() instanceof Player player)) return;
+
+        if (Models.Player.isPlayerGhost(player)) {
+            e.setTranslucence(playerGhostTranslucenceLevel.get());
+        }
+    }
+
+    @SubscribeEvent
+    public void onTranslucentCheckForOtherMods(CustomModFeatureRenderTranslucentCheckEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
 
         if (Models.Player.isPlayerGhost(player)) {

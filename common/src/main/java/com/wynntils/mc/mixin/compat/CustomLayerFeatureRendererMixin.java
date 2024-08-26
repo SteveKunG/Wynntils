@@ -5,10 +5,10 @@
 package com.wynntils.mc.mixin.compat;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.wynntils.core.components.Models;
 import com.wynntils.core.events.MixinHelper;
 import com.wynntils.mc.event.LivingEntityRenderTranslucentCheckEvent;
 import com.wynntils.utils.colors.CustomColor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -29,9 +29,12 @@ public class CustomLayerFeatureRendererMixin {
             index = 5)
     private int setTranslucentFor3DSkinLayer(
             int original, @Local(argsOnly = true) AbstractClientPlayer abstractClientPlayer) {
-        boolean isGhostPlayer = Models.Player.isPlayerGhost(abstractClientPlayer);
+        Minecraft minecraft = Minecraft.getInstance();
+        boolean isBodyVisible = !abstractClientPlayer.isInvisible();
+        boolean translucent = !isBodyVisible && !abstractClientPlayer.isInvisibleTo(minecraft.player);
+
         LivingEntityRenderTranslucentCheckEvent event = new LivingEntityRenderTranslucentCheckEvent(
-                isGhostPlayer, abstractClientPlayer, isGhostPlayer ? 0.15f : 1f);
+                translucent, abstractClientPlayer, translucent ? 0.15f : 1f);
         MixinHelper.post(event);
         return CustomColor.fromInt(original).withAlpha(event.getTranslucence()).asInt();
     }

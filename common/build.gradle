@@ -9,7 +9,19 @@ dependencies {
     implementation("com.github.wynntils:hades:v${hades_version}")
     implementation("com.github.wynntils:antiope:v${antiope_version}")
 
+    modImplementation "maven.modrinth:3dskinlayers:8YK20yhu"
+
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
+}
+
+repositories {
+    maven {
+        name "Modrinth"
+        url "https://api.modrinth.com/maven"
+        content {
+            includeGroup "maven.modrinth"
+        }
+    }
 }
 
 architectury {
